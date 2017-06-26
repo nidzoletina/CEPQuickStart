@@ -1,4 +1,8 @@
+#Template for XML manifest taken from: https://medium.com/@HallgrimurTh/extending-adobe-cc-2014-apps-ba1d101e27da
+# another example at: http://www.adobe.com/devnet/creativesuite/articles/a-short-guide-to-HTML5-extensions.html#fn-apps-supported
+
 import os, time
+from shutil import copyfile
 
 class Folder:
 	"""This class will will keep target paths for new folders"""
@@ -13,12 +17,14 @@ class CEPProject:
 	"""
 
 	def __init__(self):
-		self.extensionsFolder = os.path.join(os.path.dirname(__file__), "..")
+		self.installerPath = os.path.dirname(__file__)
+		self.extensionsFolder = os.path.join( self.installerPath, "..")
 		self.AskQuestions()		
 		self.foldersToCreateNames = ["js", "css", "host", "CSXS"]
 		self.Folders = []		
 		self.CreateFolders()
 		self.CreateREADME()
+		self.CopyInitialExtensionFiles()
 
 	def AskQuestions(self):
 		newExtensionName = input('Specify new extension name: ')
@@ -37,9 +43,11 @@ class CEPProject:
 		self.extensionRootFolder = self.NewFolder( self.extensionsFolder, self.newExtensionName )
 
 	def CreateFolders(self):
+		print("\n\n")
 		self.CreateRootFolder()
 		for folder in self.foldersToCreateNames:
-		 	self.NewFolder(self.extensionRootFolder.path, folder )			
+		 	self.NewFolder(self.extensionRootFolder.path, folder )
+		print("\n\n")		
 
 	def CreateREADME(self):
 		ExtensionFolderStructureInfoFile = os.path.join( self.extensionRootFolder.path, self.newExtensionName+"_README.txt")
@@ -47,95 +55,16 @@ class CEPProject:
 		f.write("Extension folder structure created on: " + time.strftime("%Y %m %d %Hh%M")+ " by: "+ os.getlogin() )
 		f.close()
 
+	def CopyInitialExtensionFiles(self):		
+		self.CopyFile( os.path.join(self.installerPath , "Resources", "manifest.xml"),  os.path.join(self.extensionRootFolder.path, "CSXS", "manifest.xml"))
+		self.CopyFile( os.path.join(self.installerPath , "Resources", "index.html"),  os.path.join(self.extensionRootFolder.path, "index.html" ) )
+		self.CopyFile( os.path.join(self.installerPath , "Resources", ".debug"),  os.path.join(self.extensionRootFolder.path, ".debug") )
+		self.CopyFile( os.path.join(self.installerPath , "Resources", "CSInterface.js"),  os.path.join(self.extensionRootFolder.path, "js", "CSInterface.js"))
+		self.CopyFile( os.path.join(self.installerPath , "Resources", "main.js"),  os.path.join(self.extensionRootFolder.path, "js", "main.js"))
 
-
-# NewExtensionName = input('Specify new extension name: ')
-
-# NewExtensionRootPath = os.path.join(AllExtensionsRootFolder, NewExtensionName )
-# os.mkdir( NewExtensionRootPath )
-
-# CSXSFolderPath = os.path.join(NewExtensionRootPath, "CSXS")
-# JSPath = os.path.join(NewExtensionRootPath, "JS")
-# os.mkdir(CSXSFolderPath)
-# os.mkdir(JSPath)
-
-
-
-
-#Template for XML manifest taken from: https://medium.com/@HallgrimurTh/extending-adobe-cc-2014-apps-ba1d101e27da
-# another example at: http://www.adobe.com/devnet/creativesuite/articles/a-short-guide-to-HTML5-extensions.html#fn-apps-supported
-
-ManifestFileContent = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ExtensionManifest ExtensionBundleId="com.example.helloworld" ExtensionBundleName="Hello world" ExtensionBundleVersion="1.0" Version="4.0">
-	<ExtensionList>
-		<Extension Id="com.example.helloworld.extension" Version="1.0"/>
-	</ExtensionList>
-	<ExecutionEnvironment>
-		<HostList>			
-			<Host Name="IDSN" Version="[10.0,20.0]"/>
-		</HostList>
-		<LocaleList>
-			<Locale Code="All"/>
-		</LocaleList>
-		<RequiredRuntimeList>
-			<RequiredRuntime Name="CSXS" Version="7.0"/>
-		</RequiredRuntimeList>
-	</ExecutionEnvironment>
-	<DispatchInfoList>
-		<Extension Id="com.example.helloworld.extension">
-			<DispatchInfo>
-				<Resources>
-					<MainPath>./index.html</MainPath>
-				</Resources>
-				<UI>
-					<Type>Panel</Type>
-					<Menu>Hello world</Menu>
-					<Geometry>
-						<Size>
-							<Height>400</Height>
-							<Width>400</Width>
-						</Size>
-					</Geometry>
-				</UI>
-			</DispatchInfo>
-		</Extension>
-	</DispatchInfoList>
-</ExtensionManifest>"""
-
-# ManifestFilePath = os.path.join(CSXSFolderPath, "Manifest.xml")
-# f = open(ManifestFilePath, 'w')
-# f.write(ManifestFileContent)
-# f.close()
-
-htmlFileContent = """<!doctype html>
-<html>
-<body>
-<div>This little div is sooo coool!</div>
-	<button id="btn">Click me!</button>
-</body>
-</html>
-"""
-
-
-# IndexFilePath = os.path.join(NewExtensionRootPath, "Index.html")
-# f = open(IndexFilePath, 'w')
-# f.write(htmlFileContent)
-# f.close()
-
-debugFileContent = """<?xml version="1.0" encoding="UTF-8"?> 
-<ExtensionList>
-    <Extension Id="com.example.helloworld.extension">
-        <HostList>
-           <Host Name="IDSN" Port="8069"/> 
-        </HostList>
-    </Extension>
-</ExtensionList>"""
-
-
-# DebugPortSpecifyFile = os.path.join(NewExtensionRootPath, ".debug")
-# f = open(DebugPortSpecifyFile, 'w')
-# f.write(debugFileContent)
-# f.close()
+	def CopyFile(self, src, dst):
+		print("Copying file: " +src +"\n to " + dst+"\n\n")
+		copyfile(src, dst)
 
 
 a = CEPProject()

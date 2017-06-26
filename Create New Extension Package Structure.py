@@ -1,5 +1,6 @@
-#Template for XML manifest taken from: https://medium.com/@HallgrimurTh/extending-adobe-cc-2014-apps-ba1d101e27da
-# another example at: http://www.adobe.com/devnet/creativesuite/articles/a-short-guide-to-HTML5-extensions.html#fn-apps-supported
+#Template for XML manifest taken from: https://medium.com/@HallgrimurTh/extending-adobe-cc-2014
+#-apps-ba1d101e27da  another example at: http://www.adobe.com/devnet/creativesuite/articles/a-short-
+#guide-to-HTML5-extensions.htmlfn-apps-supported
 
 import os, time
 from shutil import copyfile
@@ -11,10 +12,11 @@ class Folder:
 		os.mkdir(self.path)
 		print("Created folder: " + self.path)
 
-class CEPProject:
-	"""This class will create an initial folder structure for your Adoobe application CEP extension. 
-	It will copy common libraries (such as CSInterface.js) and create initial .js files to get you going quickly.
-	"""
+class CEPProject:     """This class will create an initial folder structure for your Adoobe
+application CEP extension. It will copy common libraries (such as CSInterface.js, actually
+currently only that lib... :(  )) and create initial .js files to get you going quickly. Keep in
+mind, this version is still primitive, and won't update file content to match the new name you give
+you your extension.     """
 
 	def __init__(self):
 		self.installerPath = os.path.dirname(__file__)

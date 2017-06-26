@@ -1,1 +1,2 @@
 # CEPQuickStart
+# this script will create the initial folder structure and files needed to start your custom extensions for Adobe applications. This version is still primitive, and won't update file content to reflect the name of your project, but it will help you quickly start your projects.

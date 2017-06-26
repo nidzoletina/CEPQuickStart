@@ -6,18 +6,17 @@ import os, time
 from shutil import copyfile
 
 class Folder:
-	"""This class will will keep target paths for new folders"""
+	"""This class will will keep target paths for new folders, create the folders and print, so that you have an idea of what is going on"""
 	def __init__(self, rootPath, folderName="."):		
 		self.path = os.path.join(rootPath, folderName)
 		os.mkdir(self.path)
 		print("Created folder: " + self.path)
 
-class CEPProject:     """This class will create an initial folder structure for your Adoobe
-application CEP extension. It will copy common libraries (such as CSInterface.js, actually
-currently only that lib... :(  )) and create initial .js files to get you going quickly. Keep in
-mind, this version is still primitive, and won't update file content to match the new name you give
-you your extension.     """
-
+class CEPProject:     
+	"""This class will create an initial folder structure for your Adoobe
+application CEP extension. It will copy common libraries (such as CSInterface.js and Vulcan.js.
+Keep in mind, this version is still primitive, and won't update file content to match the new name you give
+you your extension."""
 	def __init__(self):
 		self.installerPath = os.path.dirname(__file__)
 		self.extensionsFolder = os.path.join( self.installerPath, "..")
@@ -62,6 +61,7 @@ you your extension.     """
 		self.CopyFile( os.path.join(self.installerPath , "Resources", "index.html"),  os.path.join(self.extensionRootFolder.path, "index.html" ) )
 		self.CopyFile( os.path.join(self.installerPath , "Resources", ".debug"),  os.path.join(self.extensionRootFolder.path, ".debug") )
 		self.CopyFile( os.path.join(self.installerPath , "Resources", "CSInterface.js"),  os.path.join(self.extensionRootFolder.path, "js", "CSInterface.js"))
+		self.CopyFile( os.path.join(self.installerPath , "Resources", "Vulcan.js"),  os.path.join(self.extensionRootFolder.path, "js", "Vulcan.js"))
 		self.CopyFile( os.path.join(self.installerPath , "Resources", "main.js"),  os.path.join(self.extensionRootFolder.path, "js", "main.js"))
 
 	def CopyFile(self, src, dst):
